@@ -34,9 +34,14 @@ export default {
       const data = res.data
       const {meta: {status, msg}} = data
       console.log(data)
-      if (status === 201) {
-        this.$message.susccess(msg)
-        // 登录成功跳转
+      if (status === 200) {
+        this.$message.success(msg)
+        // 获取到用户成功登陆时的 token
+        const {data: {token}} = data
+        // 记录下 token
+        sessionStorage.setItem('token', token)
+        console.log(token)
+        this.$router.push({name: 'home'})
       } else {
         this.$message.error(msg)
       }

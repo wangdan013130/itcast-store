@@ -9,7 +9,7 @@
           <h2>电商后台管理系统</h2>
         </el-col>
         <el-col :span="1">
-          <a href="#">退出</a>
+          <a href="#" @click.prevent="handleLogout">退出</a>
         </el-col>
       </el-row>
     </el-header>
@@ -93,7 +93,17 @@
 
 <script>
 export default {
-
+  // 判断是否登录
+  beforeCreate () {
+    // 从 sessionStorage 中获取 token
+    const token = sessionStorage.getItem('token')
+    // 判断 token 是否存在
+    if (!token) {
+      // 跳转页面
+      this.$router.push({name: 'login'})
+      this.$message.error('请先登录')
+    }
+  }
 }
 </script>
 
