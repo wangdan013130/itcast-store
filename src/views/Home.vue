@@ -103,6 +103,15 @@ export default {
       this.$router.push({name: 'login'})
       this.$message.error('请先登录')
     }
+  },
+  methods: {
+  // 退出登录
+  handleLogout() {
+    // 删除 sessionStorage 中的 token
+    sessionStorage.clear()
+    this.$router.push({name: 'login'})
+    this.$message.success('退出成功')
+  }
   }
 }
 </script>
