@@ -12,7 +12,7 @@
     <el-form-item label="密码">
       <el-input type="password" v-model="formData.password"></el-input>
     </el-form-item>
-    <el-button type="primary"  class="login-btn" @click="handelLogin">登录</el-button>
+    <el-button type="primary"  class="login-btn" @click="handleLogin">登录</el-button>
   </el-form>
 </div>
 </template>
@@ -24,6 +24,21 @@ export default {
       formData: {
         username: '',
         passeord: ''
+      }
+    }
+  },
+  methods: {
+    // 登录功能
+    async handleLogin () {
+      const res = await this.$http.post('login', this.formData)
+      const data = res.data
+      const {meta: {status, msg}} = data
+      console.log(data)
+      if (status === 201) {
+        this.$message.susccess(msg)
+        // 登录成功跳转
+      } else {
+        this.$message.error(msg)
       }
     }
   }
