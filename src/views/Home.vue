@@ -59,7 +59,7 @@
               <i class="el-icon-menu"></i>
               <span slot="title">分类参数</span>
             </el-menu-item>
-            <el-menu-item index="3-3">
+            <el-menu-item index='/category'>
               <i class="el-icon-menu"></i>
               <span slot="title">商品分类</span>
             </el-menu-item>
