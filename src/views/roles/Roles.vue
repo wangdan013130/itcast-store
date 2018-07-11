@@ -17,8 +17,14 @@
             :key="item.id">
             <el-col :span="4">
               <!-- 一级分类数据 -->
+              <!-- 测试删除角色某个权限 -->
+              <!-- <el-tag
+                @close="handleColse"
+                closable>
+                <span>djkajlk</span>
+              </el-tag> -->
               <el-tag
-                @click="handleClose"
+                @close="handleCloseRoles(scope.row.id, item.id)"
                 closable>
                 <span>{{item.authName}}</span>
               </el-tag>
@@ -32,8 +38,9 @@
                 <el-col :span="4">
                   <el-tag
                   type="success"
-                  @click="handleClose"
+                  @close="handleCloseRoles(scope.row.id, item1.id)"
                   closable>
+                  <!-- 动态编辑标签可以通过点击标签关闭按钮后触发的 close 事件来实现 -->
                     <span>{{item1.authName}}</span>
                   </el-tag>
                   <i class="el-icon-arrow-right"></i>
@@ -44,7 +51,7 @@
                     v-for="item2 in item1.children"
                     :key="item2.id"
                     type="warning"
-                    @click="handleClose"
+                    @close="handleCloseRoles(scope.row.id, item2.id)"
                     closable
                     class="tagRoles">
                     <span>{{item2.authName}}</span>
@@ -116,8 +123,22 @@ export default {
         this.$message.success(msg)
       }
     },
-    handleClose () {
+    // 测试删除角色某个权限
+    // handleColse () {
+    //   alert('确定删除吗?')
+    // },
+    // 删除角色某个权限
+    async handleCloseRoles (roleId, rightId) {
       console.log('关闭')
+      // 返回数据,返回当前所有拥有的角色信息
+      const {data: resData} = await this.$http.delete(`roles/${roleId}/rights/${rightId}`)
+      const {meta: {status, msg}} = resData
+      if (status === 200) {
+        // 删除成功, 重新加载当前数据
+        this.$message.success(msg)
+      } else {
+        this.$message.error(msg)
+      }
     }
   }
 }
