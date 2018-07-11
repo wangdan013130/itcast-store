@@ -17,9 +17,9 @@
       <el-aside class="aside" width="200px">
         <!-- 侧边栏 -->
         <el-menu
-          :router="true"
           unique-opened
           default-active="1-1"
+          :router="true"
           class="menu">
           <el-submenu index="1">
             <template slot="title">
@@ -86,7 +86,9 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main class="main">hdsl</el-main>
+      <el-main class="main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -106,12 +108,12 @@ export default {
   },
   methods: {
   // 退出登录
-  handleLogout() {
-    // 删除 sessionStorage 中的 token
-    sessionStorage.clear()
-    this.$router.push({name: 'login'})
-    this.$message.success('退出成功')
-  }
+    handleLogout () {
+      // 删除 sessionStorage 中的 token
+      sessionStorage.clear()
+      this.$router.push({name: 'login'})
+      this.$message.success('退出成功')
+    }
   }
 }
 </script>
@@ -147,5 +149,6 @@ export default {
 .main {
   background-color: #e9eef3;
   height: 100%;
+  padding-top: 0;
 }
 </style>

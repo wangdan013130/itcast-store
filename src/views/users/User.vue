@@ -214,8 +214,8 @@ export default {
   methods: {
     // 用户列表数据加载
     async loadData () {
-      const token = sessionStorage.getItem('token')
-      this.$http.defaults.headers.common['Authorization'] = token
+      // const token = sessionStorage.getItem('token')
+      // this.$http.defaults.headers.common['Authorization'] = token
       // 用 query 将要查询的数据传递过去
       const res = await this.$http.get(`users?pagenum=${this.currentPage}&pagesize=${this.pagesize}&query=${this.searchValue}`)
       // 请求头中携带 token
