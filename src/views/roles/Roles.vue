@@ -15,12 +15,21 @@
       <el-table-column
         prop="roleName"
         label="角色名称"
-        width="250">
+        width="350">
       </el-table-column>
       <el-table-column
         prop="roleDesc"
         label="角色描述"
-        width="250">
+        width="350">
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        width="350">
+        <template slot-scope="scope">
+          <el-button type="primary" icon="el-icon-edit" plain size="mini"></el-button>
+          <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
+          <el-button type="success" icon="el-icon-check" plain size="mini"></el-button>
+        </template>
       </el-table-column>
     </el-table>
   </el-card>
