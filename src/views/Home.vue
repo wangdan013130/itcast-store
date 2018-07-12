@@ -21,67 +21,22 @@
           default-active="1-1"
           :router="true"
           class="menu">
-          <el-submenu index="1">
+          <!-- 一级菜单 -->
+          <el-submenu
+            v-for="item in menus"
+            :key="item.id"
+            :index="item.id">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{item.authName}}</span>
             </template>
-            <el-menu-item index="/users">
-            <!-- :router="true" 是否使用 vue-router 的模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转 -->
+            <!-- 二级菜单 -->
+            <el-menu-item
+              v-for="item1 in item.children"
+              :key="item1.id"
+              :index="'/' + item1.path">
               <i class="el-icon-menu"></i>
-              <span slot="title">用户列表</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="/roles">
-              <i class="el-icon-menu"></i>
-              <span slot="title">角色管理</span>
-            </el-menu-item>
-            <el-menu-item index="/goods">
-              <i class="el-icon-menu"></i>
-              <span slot="title">权限管理</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>商品管理</span>
-            </template>
-            <el-menu-item index="3-1">
-              <i class="el-icon-menu"></i>
-              <span slot="title">商品列表</span>
-            </el-menu-item>
-            <el-menu-item index="3-2">
-              <i class="el-icon-menu"></i>
-              <span slot="title">分类参数</span>
-            </el-menu-item>
-            <el-menu-item index='/category'>
-              <i class="el-icon-menu"></i>
-              <span slot="title">商品分类</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>订单管理</span>
-            </template>
-            <el-menu-item index="4-1">
-              <i class="el-icon-menu"></i>
-              <span slot="title">订单列表</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>数据统计</span>
-            </template>
-            <el-menu-item index="5-1">
-              <i class="el-icon-menu"></i>
-              <span slot="title">数据报表</span>
+              <span slot="title">{{item1.authName}}</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
@@ -95,6 +50,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      menus: []
+    }
+  },
   // 判断是否登录
   beforeCreate () {
     // 从 sessionStorage 中获取 token
@@ -106,8 +66,19 @@ export default {
       this.$message.error('请先登录')
     }
   },
+  created () {
+    this.loadData()
+  },
   methods: {
-  // 退出登录
+    async loadData () {
+      const {data: resData} = await this.$http.get('menus')
+      const {data, meta: {status}} = resData
+      if (status === 200) {
+        console.log(data)
+        this.menus = data
+      }
+    },
+    // 退出登录
     handleLogout () {
       // 删除 sessionStorage 中的 token
       sessionStorage.clear()
