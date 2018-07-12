@@ -99,18 +99,19 @@
       <!-- default-expanded-keys和default-checked-keys
         使用时必须设置node-key，其值为节点数据中的一个字段名，
         该字段在整棵树中是唯一的。 -->
-      <el-tree 
-        :data="treeData" 
+      <el-tree
+        ref="tree"
+        :data="treeData"
         :props="defaultProps"
         v-loading="loadingTree"
         show-checkbox
-        default-expand-all 
+        default-expand-all
         node-key="id"
         :default-checked-keys="checkList">
       </el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleEditRoles">确 定</el-button>
       </span>
       <!-- data : 提供树形数据   props: 设置数据中展示的属性 -->
     </el-dialog>
@@ -136,7 +137,9 @@ export default {
         label: 'authName'
       },
       // 获取要选择的节点
-      checkList: []
+      checkList: [],
+      // 记录当前修改的角色 id
+      currentRoleId: -1
     }
   },
   created () {
@@ -190,8 +193,10 @@ export default {
     // 获取当前角色权限并实现勾选
     async handleOpenRolesDialog (roles) {
       this.dialogVisible = true 
+      // 记录下角色 id , 分配权限时使用
+      this.currentRoleId = roles.id
       // 获取当前角色所拥有的权限的 id
-      //遍历一级权限
+      // 遍历一级权限
       const arr = []
       roles.children.forEach((item1) => {
         // 遍历二级权限
@@ -203,6 +208,16 @@ export default {
         })
       })
       this.checkList = arr
+    },
+    // 更改角色权限
+    handleEditRoles () {
+      // 获取到被选中的节点集合数组
+      const checkedKeys = this.$refs.tree.getCheckedKeys()
+      // 获取到得半选中的节点集合数组
+      const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys()
+      console.log(checkedKeys, halfCheckedKeys)
+      const newArray = [...checkedKeys, ...halfCheckedKeys]
+      console.log(newArray)
     }
   }
 }
