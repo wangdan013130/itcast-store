@@ -8,22 +8,20 @@
       :data="list"
       border
       style="width: 100%">
-      <el-table-column>
-        <!-- tree grid 
-        treeKey 绑定到id，给每一个节点设置一个唯一值
-        parentKey 绑定到父id属性，区分父子节点
-        levelKey 绑定到层级的属性
-        childKey 绑定到存储子元素的属性-->
-        <el-tree-grid
-          label="分类名称"
-          prop="cat_name"
-          treeKey="cat_id"
-          parentKey="cat_pid"
-          levelKey="cat_level"
-          childKey="children"
-          :indentSize="30">
-        </el-tree-grid>
-      </el-table-column>
+      <!-- tree grid 
+      treeKey 绑定到id，给每一个节点设置一个唯一值
+      parentKey 绑定到父id属性，区分父子节点
+      levelKey 绑定到层级的属性
+      childKey 绑定到存储子元素的属性-->
+      <el-tree-grid
+        label="分类名称"
+        prop="cat_name"
+        treeKey="cat_id"
+        parentKey="cat_pid"
+        levelKey="cat_level"
+        childKey="children"
+        :indentSize="30">
+      </el-tree-grid>
       <el-table-column
         label="级别"
         width="200">
@@ -44,8 +42,8 @@
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" plain size="mini"></el-button>
-          <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
+          <el-button type="primary" icon="el-icon-edit" plain size="mini"  @click="dialogHandleCategory = true"></el-button>
+          <el-button type="danger" icon="el-icon-delete" plain size="mini" @click="handleDelete(scope.row.cat_id)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -58,7 +56,8 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
-    <!-- 5 弹出添加部分 -->
+    <!-- 5 弹出修改部分-->
+
   </el-card>
 </template>
 
@@ -73,7 +72,9 @@ export default {
       // 配置分页所需数据,
       pagenum: 1,
       pagesize: 10,
-      total: 0
+      total: 0,
+      // 设置修改隐藏框显示与隐藏所需数据
+      dialogHandleCategory: true
     }
   },
   created () {
@@ -102,6 +103,32 @@ export default {
         this.list = result
         this.total = total
       }
+    },
+    // 删除分类数据
+    handleDelete (id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const {data: resData} = await this.$http.delete(`categories/${id}`)
+        const {meta: {status, msg}} = resData
+        if (status === 200) {
+          this.$message.success(msg)
+          this.loadData()
+        } else {
+          this.$message.error(msg)
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })        
+      })
+    },
+    // 修改分类数据
+    handleEditCategory (id) {
+
     }
   },
   components: {
