@@ -86,7 +86,7 @@
         <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" plain size="mini"></el-button>
           <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
-          <el-button @click="dialogVisible = true" type="success" icon="el-icon-check" plain size="mini"></el-button>
+          <el-button @click="handleOpenRolesDialog(scope.row)" type="success" icon="el-icon-check" plain size="mini"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -94,15 +94,25 @@
     <el-dialog
       title="分配权限"
       :visible.sync="dialogVisible"
-      v-loading="loadingTree"
-      @open="handleOpenRolesDialog">
-      <!-- data : 提供树形数据   props: 设置数据中展示的属性 -->
-      <el-tree
-        :data="treeData"
+      @open="handleOpenRoles">
+      <!-- data :提供树形数据   props: 数据中显示的属性-->
+      <!-- default-expanded-keys和default-checked-keys
+        使用时必须设置node-key，其值为节点数据中的一个字段名，
+        该字段在整棵树中是唯一的。 -->
+      <el-tree 
+        :data="treeData" 
         :props="defaultProps"
+        v-loading="loadingTree"
         show-checkbox
-        default-expand-all>
+        default-expand-all 
+        node-key="id"
+        :default-checked-keys="checkList">
       </el-tree>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+      <!-- data : 提供树形数据   props: 设置数据中展示的属性 -->
     </el-dialog>
   </el-card>
 </template>
@@ -124,7 +134,9 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'authName'
-      }
+      },
+      // 获取要选择的节点
+      checkList: []
     }
   },
   created () {
@@ -167,18 +179,30 @@ export default {
         this.$message.error(msg)
       }
     },
-    // 获取角色所有权限
-    async handleOpenRolesDialog () {
+    // 获取所有权限
+    async handleOpenRoles () {
       this.loadingTree = true
       const {data: resData} = await this.$http.get('rights/tree')
       this.loadingTree = false
-      console.log(resData)
-      const {meta: {status, msg}} = resData
-      if (status === 200) {
-        this.$message.success(msg)
-      } else {
-        this.$message.error(msg)
-      }
+      const { data } = resData
+      this.treeData = data
+    },
+    // 获取当前角色权限并实现勾选
+    async handleOpenRolesDialog (roles) {
+      this.dialogVisible = true 
+      // 获取当前角色所拥有的权限的 id
+      //遍历一级权限
+      const arr = []
+      roles.children.forEach((item1) => {
+        // 遍历二级权限
+        item1.children.forEach((item2) => {
+          // 遍历三级权限
+          item2.children.forEach((item3) => {
+            arr.push(item3.id)
+          })
+        })
+      })
+      this.checkList = arr
     }
   }
 }
