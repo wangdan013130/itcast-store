@@ -192,7 +192,7 @@ export default {
     },
     // 获取当前角色权限并实现勾选
     async handleOpenRolesDialog (roles) {
-      this.dialogVisible = true 
+      this.dialogVisible = true
       // 记录下角色 id , 分配权限时使用
       this.currentRoleId = roles.id
       // 获取当前角色所拥有的权限的 id
@@ -210,14 +210,25 @@ export default {
       this.checkList = arr
     },
     // 更改角色权限
-    handleEditRoles () {
+    async handleEditRoles () {
       // 获取到被选中的节点集合数组
       const checkedKeys = this.$refs.tree.getCheckedKeys()
       // 获取到得半选中的节点集合数组
       const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys()
-      console.log(checkedKeys, halfCheckedKeys)
+      // console.log(checkedKeys, halfCheckedKeys)
       const newArray = [...checkedKeys, ...halfCheckedKeys]
-      console.log(newArray)
+      // console.log(newArray)
+      const {data: resData} = await this.$http.post(`roles/${this.currentRoleId}/rights`, {
+        rids: newArray.join(',')
+      })
+      const {meta: {status, msg}} = resData
+      if (status === 200) {
+        this.dialogVisible = false
+        this.$message.success(msg)
+        this.loadData()
+      } else {
+        this.$message.error(msg)
+      }
     }
   }
 }
