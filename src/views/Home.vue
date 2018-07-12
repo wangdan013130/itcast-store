@@ -56,16 +56,16 @@ export default {
     }
   },
   // 判断是否登录
-  beforeCreate () {
-    // 从 sessionStorage 中获取 token
-    const token = sessionStorage.getItem('token')
-    // 判断 token 是否存在
-    if (!token) {
-      // 跳转页面
-      this.$router.push({name: 'login'})
-      this.$message.error('请先登录')
-    }
-  },
+  // beforeCreate () {
+  //   // 从 sessionStorage 中获取 token
+  //   const token = sessionStorage.getItem('token')
+  //   // 判断 token 是否存在
+  //   if (!token) {
+  //     // 跳转页面
+  //     this.$router.push({name: 'login'})
+  //     this.$message.error('请先登录')
+  //   }
+  // },
   created () {
     this.loadData()
   },

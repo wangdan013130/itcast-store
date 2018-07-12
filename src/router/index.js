@@ -6,9 +6,10 @@ import User from '@/views/users/User.vue'
 import Rights from '@/views/roles/Rights.vue'
 import Roles from '@/views/roles/Roles.vue'
 import Category from '@/views/goods/category.vue'
+import { Message } from '../../node_modules/element-ui'
 Vue.use(Router)
-
-export default new Router({
+// 路由的前置守卫
+const router = new Router({
   routes: [
     {
       name: 'login',
@@ -47,3 +48,23 @@ export default new Router({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  // console.log(to, from)
+  // 判断当前访问的是否是 login,如果是直接 next
+  if (to.name === 'login') {
+    next()
+  } else {
+    // 如果没有token 返回登录
+    const token = sessionStorage.getItem('token')
+    // 判断 token 是否存在
+    if (!token) {
+      // 跳转页面
+      router.push({name: 'login'})
+      // 提示
+      Message.warning('请先登录')
+      return
+    }
+    next()
+  }
+})
+export default router
