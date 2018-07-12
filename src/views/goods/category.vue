@@ -5,16 +5,24 @@
     <el-button type="success" plain>添加分类</el-button>
     <!-- 3 表格 -->
     <el-table
-      ref="cateGory"
       :data="list"
       border
-      height="300px"
-      highlight-current-row
       style="width: 100%">
-      <el-table-column
-        prop="cat_name"
-        label="分类名称"
-        width="250">
+      <el-table-column>
+        <!-- tree grid 
+        treeKey 绑定到id，给每一个节点设置一个唯一值
+        parentKey 绑定到父id属性，区分父子节点
+        levelKey 绑定到层级的属性
+        childKey 绑定到存储子元素的属性-->
+        <el-tree-grid
+          label="分类名称"
+          prop="cat_name"
+          treeKey="cat_id"
+          parentKey="cat_pid"
+          levelKey="cat_level"
+          childKey="children"
+          :indentSize="30">
+        </el-tree-grid>
       </el-table-column>
       <el-table-column
         label="级别"
@@ -33,7 +41,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="操作">
+        label="操作"
+        width="200">
         <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" plain size="mini"></el-button>
           <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
@@ -49,10 +58,14 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+    <!-- 5 弹出添加部分 -->
   </el-card>
 </template>
 
 <script>
+// 下载包 , 引入包
+import ElTreeGrid from 'element-tree-grid'
+
 export default {
   data () {
     return {
@@ -79,8 +92,9 @@ export default {
       console.log(`当前页: ${val}`)
     },
     async loadData () {
-      const {data: resData} = await this.$http.get(`categories?type=1&pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
-      console.log(resData)
+      // 此处应将 type 改为 3,  获取到完整数据
+      const {data: resData} = await this.$http.get(`categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
+      // console.log(resData)
       const {meta: {status, msg}} = resData
       const {data: {result, total}} = resData
       if (status === 200) {
@@ -89,6 +103,9 @@ export default {
         this.total = total
       }
     }
+  },
+  components: {
+    ElTreeGrid
   }
 }
 </script>
