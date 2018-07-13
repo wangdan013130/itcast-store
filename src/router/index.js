@@ -6,6 +6,7 @@ import User from '@/views/users/User.vue'
 import Rights from '@/views/roles/Rights.vue'
 import Roles from '@/views/roles/Roles.vue'
 import Category from '@/views/goods/category.vue'
+import Goods from '@/views/goods/index.vue'
 import { Message } from '../../node_modules/element-ui'
 Vue.use(Router)
 // 路由的前置守卫
@@ -30,8 +31,8 @@ const router = new Router({
           component: User
         },
         {
-          name: 'goods',
-          path: '/goods',
+          name: 'rights',
+          path: '/rights',
           component: Rights
         },
         {
@@ -43,6 +44,11 @@ const router = new Router({
           name: 'category',
           path: '/categories',
           component: Category
+        },
+        {
+          name: 'goods',
+          path: '/goods',
+          component: Goods
         }
       ]
     }

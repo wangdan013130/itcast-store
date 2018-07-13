@@ -6,6 +6,18 @@
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
     </el-breadcrumb>
+    <el-row>
+      <el-col :span="24">
+        <el-input
+        placeholder="请输入内容"
+        v-model="searchValue"
+        class="search">
+        <!-- 搜索功能 -->
+          <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
+        </el-input>
+        <el-button type="success" plain @click="dialogFormVisible = true">添加</el-button>
+      </el-col>
+    </el-row>
     <!-- 2 表格部分 -->
      <el-table
       border
@@ -68,6 +80,7 @@ export default {
 .box-card {
   height: 100%;
   overflow: auto;
+  background-color: #e9eef3;
 }
 
 .el-card__body {
@@ -79,5 +92,11 @@ export default {
   line-height: 45px;
   background-color: #d3dce6;
   padding-left: 10px;
+}
+
+.search {
+  width: 300px;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 </style>
