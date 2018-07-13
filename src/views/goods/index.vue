@@ -21,28 +21,31 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="goods_name"
         label="商品名称"
-        width="400">
+        width="380">
       </el-table-column>
       <el-table-column
-        prop="province"
+        prop="goods_price"
         label="商品价格(元)"
-        width="150">
+        width="120">
       </el-table-column>
       <el-table-column
-        prop="city"
+        prop="goods_weight"
         label="商品重量"
-        width="150">
+        width="120">
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="upd_time"
         label="创建时间"
         width="150">
+        <template slot-scope="scope">
+          {{scope.row.upd_time | getTime('YYYY-MM-DD')}}
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
-        width="100">
+        width="150">
         <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" plain size="mini"></el-button>
           <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
@@ -54,7 +57,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="pagenum"
-      :page-sizes="[100, 200, 300, 400]"
+      :page-sizes="[20, 40, 60, 80]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
@@ -63,25 +66,44 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        list: [],
-        // 分页所需数据
-        pagenum: 1,
-        pagesize: 10,
-        total: ''
-      }
-    },
-    created () {
+export default {
+  data () {
+    return {
+      list: [],
+      // 分页所需数据
+      pagenum: 1,
+      pagesize: 10,
+      total: 0
+    }
+  },
+  created () {
+    this.loadData()
+  },
+  methods: {
+    // 分页所需数据
+    handleSizeChange (val) {
+      this.pagesize = val
       this.loadData()
+      console.log(`每页 ${val} 条`)
     },
-    methods: {
-      async loadData () {
-
+    handleCurrentChange (val) {
+      this.pagenum = val
+      this.loadData()
+      console.log(`当前页: ${val}`)
+    },
+    async loadData () {
+      const {data: resData} = await this.$http.get(`goods?pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
+      const {data, meta: {status, msg}} = resData
+      if (status === 200) {
+        this.$message.success(msg)
+        this.list = data.goods
+        this.total = data.total
+      } else {
+        this.$message.error(msg)
       }
     }
-  } 
+  }
+}
 </script>
 
 <style>
