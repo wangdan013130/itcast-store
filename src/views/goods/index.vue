@@ -1,14 +1,14 @@
 <template>
   <el-card>
     <!-- 1 面包屑 -->
-    <my-brand-crum level1="商品管理" levle2="商品列表"></my-brand-crum>
+    <my-brand level1="商品管理" levle2="商品列表"></my-brand>
     <!-- 2 搜索框 -->
     <el-row>
       <el-col :span="24">
         <el-input placeholder="请输入内容" class="searchBtn" clearable>
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
-        <el-button type="primary" plain>添加商品</el-button>
+        <el-button type="primary" plain @click="$router.push({name: 'goods-add'})">添加商品</el-button>
       </el-col>
     </el-row>
     <!-- 3 表格部分 -->
@@ -56,7 +56,7 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="pagenum"
+      :current-page.sync="pagenum"
       :page-sizes="[20, 40, 60, 80]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
@@ -66,13 +66,14 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
       list: [],
       // 分页所需数据
       pagenum: 1,
-      pagesize: 10,
+      pagesize: 5,
       total: 0
     }
   },
@@ -80,7 +81,7 @@ export default {
     this.loadData()
   },
   methods: {
-    // 分页所需数据
+    // 加载分页数据
     handleSizeChange (val) {
       this.pagesize = val
       this.loadData()
@@ -92,12 +93,13 @@ export default {
       console.log(`当前页: ${val}`)
     },
     async loadData () {
+      // 此处应将 type 改为 3,  获取到完整数据
       const {data: resData} = await this.$http.get(`goods?pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
+      console.log(resData)
       const {data, meta: {status, msg}} = resData
       if (status === 200) {
-        this.$message.success(msg)
         this.list = data.goods
-        this.total = data.total
+        this.total = data.goods.total
       } else {
         this.$message.error(msg)
       }

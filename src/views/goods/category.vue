@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <!-- 1 面包屑 -->
-    <my-brandcrum level1="权限管理" levle2="角色列表" class="brands"></my-brandcrum>
+    <my-brand level1="权限管理" levle2="角色列表" class="brands"></my-brand>
     <el-button type="success" plain @click="handleAddDialg">添加分类</el-button>
     <!-- 3 表格 -->
     <el-table

@@ -1,6 +1,6 @@
 <template>
   <el-card class="box-card">
-    <my-brandcrum level1="权限管理" levle2="角色列表" class="brands"></my-brandcrum>
+    <my-brand level1="权限管理" levle2="角色列表" class="brands"></my-brand>
     <el-button>添加角色</el-button>
     <!-- 3 表格显示 -->
      <el-table

@@ -18,7 +18,7 @@ Vue.filter('getTime', (v, iframe) => {
   return moment(v).format(iframe)
 })
 // 自定义全局面包屑组件
-Vue.component('myBrandCrum', MyBrands)
+Vue.component('MyBrand', MyBrands)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

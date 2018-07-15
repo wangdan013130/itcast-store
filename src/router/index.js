@@ -6,7 +6,8 @@ import User from '@/views/users/User.vue'
 import Rights from '@/views/roles/Rights.vue'
 import Roles from '@/views/roles/Roles.vue'
 import Category from '@/views/goods/category.vue'
-import Goods from '@/views/goods/index.vue'
+import GoodsList from '@/views/goods/index.vue'
+import GoodsAdd from '@/views/goods/Add.vue'
 import { Message } from '../../node_modules/element-ui'
 Vue.use(Router)
 // 路由的前置守卫
@@ -46,9 +47,14 @@ const router = new Router({
           component: Category
         },
         {
-          name: 'goods',
+          name: 'good',
           path: '/goods',
-          component: Goods
+          component: GoodsList
+        },
+        {
+          name: 'goods-add',
+          path: 'goods/add',
+          component: GoodsAdd
         }
       ]
     }

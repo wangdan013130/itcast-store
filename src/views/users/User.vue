@@ -1,11 +1,7 @@
 <template>
   <el-card class="box-card">
     <!-- 1. 面包屑 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
+     <my-brand level1="权限管理" levle2="角色列表" class="brands"></my-brand>
     <!-- 2 搜索框 -->
     <el-row>
       <el-col :span="24">

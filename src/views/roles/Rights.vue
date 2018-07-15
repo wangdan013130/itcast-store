@@ -1,25 +1,20 @@
 <template>
   <el-card class="box-card">
     <!-- 1 面包屑 -->
-    <el-breadcrumb class="brands">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-    </el-breadcrumb>
+    <my-brand level1="权限管理" levle2="角色列表" class="brands"></my-brand>    
     <el-row>
       <el-col :span="24">
         <el-input
         placeholder="请输入内容"
-        v-model="searchValue"
         class="search">
         <!-- 搜索功能 -->
-          <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
+          <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button type="success" plain @click="dialogFormVisible = true">添加</el-button>
       </el-col>
     </el-row>
     <!-- 2 表格部分 -->
-     <el-table
+    <el-table
       border
       style="width: 100%"
       :data="list"
@@ -40,19 +35,20 @@
       </el-table-column>
       <el-table-column
         prop="level"
-        label="层级"
-        width="100">
-        <template slot-scope="scope">
-          <span v-if="scope.row.level === '0'">一级</span>
-          <span v-else-if="scope.row.level === '1'">二级</span>
-          <span v-else-if="scope.row.level === '2'">三级</span>
-        </template>
+          label="层级"
+          width="100">
+          <template slot-scope="scope">
+            <span v-if="scope.row.level === '0'">一级</span>
+            <span v-else-if="scope.row.level === '1'">二级</span>
+            <span v-else-if="scope.row.level === '2'">三级</span>
+          </template>
       </el-table-column>
     </el-table>
   </el-card>
 </template>
 
 <script>
+
 export default {
   data () {
     return {
