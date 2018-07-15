@@ -8,6 +8,7 @@ import Roles from '@/views/roles/Roles.vue'
 import Category from '@/views/goods/category.vue'
 import GoodsList from '@/views/goods/index.vue'
 import GoodsAdd from '@/views/goods/Add.vue'
+import Orders from '@/views/orders/List.vue'
 import { Message } from '../../node_modules/element-ui'
 Vue.use(Router)
 // 路由的前置守卫
@@ -55,6 +56,11 @@ const router = new Router({
           name: 'goods-add',
           path: 'goods/add',
           component: GoodsAdd
+        },
+        {
+          name: 'orders',
+          path: 'orders',
+          component: Orders
         }
       ]
     }

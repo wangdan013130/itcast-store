@@ -109,11 +109,7 @@ export default {
   },
   methods: {
     async handleAdd () {
-      const res = await this.$http({
-        url: 'goods',
-        methods: 'post',
-        data: this.fromData
-      })
+      const res = await this.$http.post('goods', this.fromData)
       console.log(res)
       const {meta: {status, msg}} = res.data
       if (status === 201) {
@@ -157,7 +153,7 @@ export default {
       this.fromData.pics.push({
         pic: response.data.tmp_path
       })
-      // console.log(this.fromData.pics)
+      console.log(this.fromData.pics)
     },
     // 处理选项卡
     handleNextStep () {
