@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <!-- 1 面包屑 -->
-    <my-brand level1="权限管理" levle2="角色列表" class="brands"></my-brand>    
+    <my-brand level1="权限管理" levle2="角色列表" class="brands"></my-brand>
     <el-row>
       <el-col :span="24">
         <el-input
@@ -48,7 +48,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
