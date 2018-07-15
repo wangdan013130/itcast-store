@@ -78,6 +78,8 @@
           <el-cascader
             expand-trigger="hover"
             change-on-select
+            clearable
+            placeholder="默认是一级分类"
             :options="options"
             :props="{
               value: 'cat_id',
@@ -214,9 +216,14 @@ export default {
     },
     // 添加分类
     async handleAdd () {
+      // 如果没有选择任何节点，则 cat_pid 是 0
+      let catPid = 0
+      if (this.selectedOptions[0]) {
+        catPid = this.selectedOptions[this.selectedOptions.length - 1]
+      }
       const fromData = {
         ...this.formAdd,
-        cat_pid: this.selectedOptions[this.selectedOptions.length - 1],
+        cat_pid: catPid,
         cat_level: this.selectedOptions.length
       }
       console.log(fromData)
